@@ -1,0 +1,11 @@
+CMSTableIAM:
+  Effect: Allow
+  Action:
+    - dynamodb:*
+  Resource:
+    - ${self:custom.BlogTable.arn}
+    - ${self:custom.SuscriptorsTable.arn}
+    - ${self:custom.PodcastTable.arn}
+
+    - !Join ["/", ["${self:custom.BlogTable.arn}", "index", "slug-index"]]
+    - !Join ["/", ["${self:custom.PodcastTable.arn}", "index", "url-index"]]

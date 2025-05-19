@@ -1,0 +1,24 @@
+CMSBucket:
+  Type: AWS::S3::Bucket
+  Properties:
+    BucketName: ${self:custom.CMSBucket.name}
+    PublicAccessBlockConfiguration:
+      BlockPublicAcls: false
+    OwnershipControls:
+      Rules:
+        - ObjectOwnership: ObjectWriter
+
+CMSBucketPolicy:
+  Type: AWS::S3::BucketPolicy
+  Properties:
+    Bucket: !Ref CMSBucket
+    #? Permitimos que cualquier persona pueda leer los archivos de nuestro bucket
+    PolicyDocument:
+      Statement:
+        - Sid: PublicRead
+          Effect: Allow
+          Principal: "*"
+          Action:
+            - s3:GetObject
+          #? El /* es para que pueda leer cualquier archivo dentro del bucket
+          Resource: arn:aws:s3:::${self:custom.CMSBucket.name}/*

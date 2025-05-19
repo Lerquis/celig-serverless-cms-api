@@ -1,0 +1,86 @@
+# !
+# !
+# !
+# !
+# !Blog
+
+createBlog:
+  handler: src/handlers/blog/createBlog.handler
+  events:
+    - http:
+        method: POST
+        path: /blog
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+updateBlog:
+  handler: src/handlers/blog/updateBlog.handler
+  events:
+    - http:
+        method: PUT
+        path: /blog/{id}
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+deleteBlog:
+  handler: src/handlers/blog/deleteBlog.handler
+  events:
+    - http:
+        method: DELETE
+        path: /blog/{id}
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+getBlogById:
+  handler: src/handlers/blog/getBlogById.handler
+  events:
+    - http:
+        method: GET
+        path: /blog/{id}
+        cors: true
+
+getBlogsByTag:
+  handler: src/handlers/blog/getBlogsByTag.handler
+  events:
+    - http:
+        method: GET
+        path: /blog/tags
+        cors: true
+
+# !
+# !
+# !
+# !
+# !Podcast
+
+createPodcast:
+  handler: src/handlers/podcasts/createPodcast.handler
+  events:
+    - http:
+        method: POST
+        path: /podcast
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+deletePodcast:
+  handler: src/handlers/podcasts/deletePodcast.handler
+  events:
+    - http:
+        method: DELETE
+        path: /podcast/{id}
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+getPodcasts:
+  handler: src/handlers/podcasts/getPodcasts.handler
+  events:
+    - http:
+        method: GET
+        path: /podcast
+        cors: true
+# !
+# !
+# !
+# !
+# !Suscriptor
+

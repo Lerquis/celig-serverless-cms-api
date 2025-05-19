@@ -1,0 +1,70 @@
+service: celig-api
+
+plugins:
+  - serverless-pseudo-parameters
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-west-2'}
+  environment:
+    BLOG_TABLE_NAME: ${self:custom.BlogTable.name}
+    SUSCRIPTIONS_TABLE_NAME: ${self:custom.SuscriptorsTable.name}
+    PODCAST_TABLE_NAME: ${self:custom.PodcastTable.name}
+    CMS_BUCKET_NAME: ${self:custom.CMSBucket.name}
+    MAIL_QUEUE_URL: ${self:custom.MailQueue.url}
+
+  iam:
+    role:
+      statements:
+        - ${file(iam/CMSTableIAM.yml):CMSTableIAM}
+        - ${file(iam/CMSBucketIAM.yml):CMSBucketIAM}
+        - ${file(iam/MailQueueIAM.yml):MailQueueIAM}
+
+resources:
+  Resources:
+    BlogTable: ${file(resources/CMSTable.yml):BlogTable}
+    SuscriptorsTable: ${file(resources/CMSTable.yml):SuscriptorsTable}
+    PodcastTable: ${file(resources/CMSTable.yml):PodcastTable}
+
+    CMSBucket: ${file(resources/CMSBucket.yml):CMSBucket}
+    CMSBucketPolicy: ${file(resources/CMSBucket.yml):CMSBucketPolicy}
+
+functions:
+  ${file(functions/Functions.yml)}
+
+  # uploadPicture:
+  #   handler: src/handlers/uploadPicture.handler
+  #   events:
+  #     - http:
+  #         method: PATCH
+  #         path: /testimonio/{id}/picture
+  #         authorizer: ${self:custom.authorizer}
+  #         cors: true
+
+custom:
+  authorizer: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:authorization-service-${self:provider.stage}-auth
+
+  MailQueue:
+    arn: ${cf:notification-service-${self:provider.stage}.MailQueueArn}
+    url: ${cf:notification-service-${self:provider.stage}.MailQueueUrl}
+
+  # CMSTable:
+  #   name: !Ref CMSTable
+  #   arn: !GetAtt CMSTable.Arn
+  BlogTable:
+    name: !Ref BlogTable
+    arn: !GetAtt BlogTable.Arn
+
+  SuscriptorsTable:
+    name: !Ref SuscriptorsTable
+    arn: !GetAtt SuscriptorsTable.Arn
+
+  PodcastTable:
+    name: !Ref PodcastTable
+    arn: !GetAtt PodcastTable.Arn
+
+  CMSBucket:
+    name: cms-bucket-celig-aws-${self:provider.stage}
