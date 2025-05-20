@@ -11,8 +11,10 @@ provider:
   region: ${opt:region, 'us-west-2'}
   environment:
     BLOG_TABLE_NAME: ${self:custom.BlogTable.name}
-    SUSCRIPTIONS_TABLE_NAME: ${self:custom.SuscriptorsTable.name}
+    SUSCRIPTOR_TABLE_NAME: ${self:custom.SuscriptorsTable.name}
     PODCAST_TABLE_NAME: ${self:custom.PodcastTable.name}
+    GALLERY_TABLE_NAME: ${self:custom.GalleryTable.name}
+
     CMS_BUCKET_NAME: ${self:custom.CMSBucket.name}
     MAIL_QUEUE_URL: ${self:custom.MailQueue.url}
 
@@ -28,6 +30,7 @@ resources:
     BlogTable: ${file(resources/CMSTable.yml):BlogTable}
     SuscriptorsTable: ${file(resources/CMSTable.yml):SuscriptorsTable}
     PodcastTable: ${file(resources/CMSTable.yml):PodcastTable}
+    GalleryTable: ${file(resources/CMSTable.yml):GalleryTable}
 
     CMSBucket: ${file(resources/CMSBucket.yml):CMSBucket}
     CMSBucketPolicy: ${file(resources/CMSBucket.yml):CMSBucketPolicy}
@@ -65,6 +68,10 @@ custom:
   PodcastTable:
     name: !Ref PodcastTable
     arn: !GetAtt PodcastTable.Arn
+
+  GalleryTable:
+    name: !Ref GalleryTable
+    arn: !GetAtt GalleryTable.Arn
 
   CMSBucket:
     name: cms-bucket-celig-aws-${self:provider.stage}

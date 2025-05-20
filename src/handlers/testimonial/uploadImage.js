@@ -1,20 +1,19 @@
 import { uploadPictureToS3 } from "../lib/uploadPictureToS3.js";
+import { v4 as uuid } from "uuid";
 import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import createError from "http-errors";
 import cors from "@middy/http-cors";
+import { returnImageBuffer } from "../../lib/returnImageBuffer.js";
 
 export async function uploadPicture(event) {
-  const { id } = event.pathParameters;
+  const buffer = returnImageBuffer(event.body);
 
-  //? Eliminamos texto de la imagen innecesario
-  const cleanedBase64 = event.body.replace(/^data:image\/\w+;base64,/, "");
-  //? Convertimos la imagen a un buffer
-  const buffer = Buffer.from(cleanedBase64, "base64");
+  const filename = uuid() + Date.now();
 
   let pictureUrl = "";
   try {
-    pictureUrl = await uploadPictureToS3(id + ".jpg", buffer);
+    pictureUrl = await uploadPictureToS3(filename + ".jpg", buffer);
 
     //? Editamos el objeto (si es necesario) y le agregamos la imagen
     // updatedAuction = await setAuctionPictureUrl(auction.id, pictureUrl);

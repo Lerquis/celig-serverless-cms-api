@@ -4,17 +4,17 @@ import createHttpError from "http-errors";
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
-const getPodcasts = async (event) => {
+const getImages = async () => {
   let result;
   try {
     result = await dynamoDB
       .scan({
-        TableName: process.env.PODCAST_TABLE_NAME,
+        TableName: process.env.GALLERY_TABLE_NAME,
       })
       .promise();
   } catch (error) {
     console.log(error);
-    throw new createHttpError.InternalServerError("Could not fetch blogs");
+    throw new createHttpError.InternalServerError("Could not fetch gallery");
   }
 
   const ordered = result.Items.sort(
@@ -23,8 +23,8 @@ const getPodcasts = async (event) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ podcasts: ordered }),
+    body: JSON.stringify({ images: ordered }),
   };
 };
 
-export const handler = commonMiddleware(getPodcasts);
+export const handler = commonMiddleware(getImages);

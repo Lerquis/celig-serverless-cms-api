@@ -1,12 +1,12 @@
 import AWS from "aws-sdk";
-import slugify from "slugify";
-import { existingBlog } from "../../lib/existingBlog.js";
-import createHttpError from "http-errors";
+import { existingItem } from "../../lib/existingItem.js";
 import { commonMiddleware } from "../../lib/commonMiddleware.js";
 import { UpdateBlogSchema } from "../../lib/schemas/blogSchemas.js";
+import { transpileSchema } from "@middy/validator/transpile";
+import createHttpError from "http-errors";
 import httpJsonBodyParser from "@middy/http-json-body-parser";
 import validator from "@middy/validator";
-import { transpileSchema } from "@middy/validator/transpile";
+import slugify from "slugify";
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
@@ -19,7 +19,12 @@ const updateBlog = async (event) => {
   let newSlug;
   if (title) {
     newSlug = slugify(title, { lower: true, strict: true });
-    const existing = await existingBlog(newSlug);
+    const existing = await existingItem(
+      slug,
+      "slug",
+      process.env.BLOG_TABLE_NAME,
+      "slug-index"
+    );
 
     if (existing.Count > 0)
       if (existing.Items[0].id !== id)

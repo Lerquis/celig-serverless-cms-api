@@ -1,14 +1,14 @@
 import AWS from "aws-sdk";
-import { v4 as uuid } from "uuid";
-import createError from "http-errors";
 import { commonMiddleware } from "../../lib/commonMiddleware.js";
-import httpJsonBodyParser from "@middy/http-json-body-parser";
-import validator from "@middy/validator";
 import { transpileSchema } from "@middy/validator/transpile";
 import { CreateBlogSchema } from "../../lib/schemas/blogSchemas.js";
 import { notifyUsers } from "../../lib/notifyUsers.js";
+import { existingItem } from "../../lib/existingItem.js";
+import { v4 as uuid } from "uuid";
+import createError from "http-errors";
+import httpJsonBodyParser from "@middy/http-json-body-parser";
+import validator from "@middy/validator";
 import slugify from "slugify";
-import { existingBlog } from "../../lib/existingBlog.js";
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
@@ -16,7 +16,12 @@ const createBlog = async (event, context) => {
   const { title, tags, content } = event.body;
 
   const slug = slugify(title, { lower: true, strict: true });
-  const existing = await existingBlog(slug);
+  const existing = await existingItem(
+    slug,
+    "slug",
+    process.env.BLOG_TABLE_NAME,
+    "slug-index"
+  );
 
   if (existing.Count > 0)
     throw new createError.Conflict("A blog with this title already exists");

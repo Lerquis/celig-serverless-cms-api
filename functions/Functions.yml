@@ -78,9 +78,67 @@ getPodcasts:
         method: GET
         path: /podcast
         cors: true
+
 # !
 # !
 # !
 # !
 # !Suscriptor
 
+createSuscriptor:
+  handler: src/handlers/suscriptor/createSuscriptor.handler
+  events:
+    - http:
+        method: POST
+        path: /suscriptor
+        cors: true
+
+deleteSuscriptor:
+  handler: src/handlers/suscriptor/deleteSuscriptor.handler
+  events:
+    - http:
+        method: DELETE
+        path: /suscriptor/{id}
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+getSuscriptors:
+  handler: src/handlers/suscriptor/getSuscriptors.handler
+  events:
+    - http:
+        method: GET
+        path: /suscriptor
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+# !
+# !
+# !
+# !
+# !Gallery
+
+uploadPictureGallery:
+  handler: src/handlers/gallery/createImage.handler
+  events:
+    - http:
+        method: PATCH
+        path: /gallery
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+deletePictureGallery:
+  handler: src/handlers/gallery/deleteImage.handler
+  events:
+    - http:
+        method: DELETE
+        path: /gallery/{name}
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+getImagesGallery:
+  handler: src/handlers/gallery/getImages.handler
+  events:
+    - http:
+        method: GET
+        path: /gallery
+        cors: true

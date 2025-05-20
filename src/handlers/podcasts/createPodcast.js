@@ -1,19 +1,24 @@
 import AWS from "aws-sdk";
 import { v4 as uuid } from "uuid";
-import createHttpError from "http-errors";
-import { commonMiddleware } from "../../lib/commonMiddleware.js";
-import httpJsonBodyParser from "@middy/http-json-body-parser";
-import validator from "@middy/validator";
 import { transpileSchema } from "@middy/validator/transpile";
 import { PodcastSchema } from "../../lib/schemas/podcastSchemas.js";
-import { existingPodcast } from "../../lib/existingPodcast.js";
+import { commonMiddleware } from "../../lib/commonMiddleware.js";
+import { existingItem } from "../../lib/existingItem.js";
+import createHttpError from "http-errors";
+import httpJsonBodyParser from "@middy/http-json-body-parser";
+import validator from "@middy/validator";
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 const createPodcast = async (event) => {
   const { url } = event.body;
 
-  const existing = await existingPodcast(url);
+  const existing = await existingItem(
+    url,
+    "url",
+    process.env.PODCAST_TABLE_NAME,
+    "url-index"
+  );
 
   if (existing.Count > 0)
     throw new createHttpError.Conflict("This blog already exists");
