@@ -47,6 +47,14 @@ getBlogsByTag:
         path: /blog/tags
         cors: true
 
+updateBlogViews:
+  handler: src/handlers/blog/updateView.handler
+  events:
+    - http:
+        method: PATCH
+        path: /blog/{id}
+        cors: true
+
 # !
 # !
 # !
@@ -141,4 +149,45 @@ getImagesGallery:
     - http:
         method: GET
         path: /gallery
+        cors: true
+
+# !
+# !
+# !
+# !
+# !Testimonial
+
+createTestimonial:
+  handler: src/handlers/testimonial/createTestimonial.handler
+  events:
+    - http:
+        method: POST
+        path: /testimonial
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+getTestimonials:
+  handler: src/handlers/testimonial/getTestimonials.handler
+  events:
+    - http:
+        method: GET
+        path: /testimonial
+        cors: true
+
+updateTestimonial:
+  handler: src/handlers/testimonial/updateTestimonial.handler
+  events:
+    - http:
+        method: PUT
+        path: /testimonial/{id}
+        authorizer: ${self:custom.authorizer}
+        cors: true
+
+deleteTestimonial:
+  handler: src/handlers/testimonial/deleteTestimonial.handler
+  events:
+    - http:
+        method: DELETE
+        path: /testimonial/{id}
+        authorizer: ${self:custom.authorizer}
         cors: true

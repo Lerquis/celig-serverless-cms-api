@@ -7,6 +7,7 @@ CMSTableIAM:
     - ${self:custom.SuscriptorsTable.arn}
     - ${self:custom.PodcastTable.arn}
     - ${self:custom.GalleryTable.arn}
+    - ${self:custom.TestimonialTable.arn}
 
     - !Join ["/", ["${self:custom.BlogTable.arn}", "index", "slug-index"]]
     - !Join ["/", ["${self:custom.PodcastTable.arn}", "index", "url-index"]]

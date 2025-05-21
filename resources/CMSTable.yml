@@ -89,3 +89,16 @@ GalleryTable:
             KeyType: HASH
         Projection:
           ProjectionType: ALL
+
+TestimonialTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: TestimonialTable-${self:provider.stage}
+    BillingMode: PAY_PER_REQUEST
+    AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+
+    KeySchema:
+      - AttributeName: id
+        KeyType: HASH

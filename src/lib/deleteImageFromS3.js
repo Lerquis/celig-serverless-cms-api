@@ -1,5 +1,4 @@
 import AWS from "aws-sdk";
-import createHttpError from "http-errors";
 
 const s3 = new AWS.S3();
 

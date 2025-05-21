@@ -14,6 +14,7 @@ provider:
     SUSCRIPTOR_TABLE_NAME: ${self:custom.SuscriptorsTable.name}
     PODCAST_TABLE_NAME: ${self:custom.PodcastTable.name}
     GALLERY_TABLE_NAME: ${self:custom.GalleryTable.name}
+    TESTIMONIAL_TABLE_NAME: ${self:custom.TestimonialTable.name}
 
     CMS_BUCKET_NAME: ${self:custom.CMSBucket.name}
     MAIL_QUEUE_URL: ${self:custom.MailQueue.url}
@@ -31,6 +32,7 @@ resources:
     SuscriptorsTable: ${file(resources/CMSTable.yml):SuscriptorsTable}
     PodcastTable: ${file(resources/CMSTable.yml):PodcastTable}
     GalleryTable: ${file(resources/CMSTable.yml):GalleryTable}
+    TestimonialTable: ${file(resources/CMSTable.yml):TestimonialTable}
 
     CMSBucket: ${file(resources/CMSBucket.yml):CMSBucket}
     CMSBucketPolicy: ${file(resources/CMSBucket.yml):CMSBucketPolicy}
@@ -72,6 +74,10 @@ custom:
   GalleryTable:
     name: !Ref GalleryTable
     arn: !GetAtt GalleryTable.Arn
+
+  TestimonialTable:
+    name: !Ref TestimonialTable
+    arn: !GetAtt TestimonialTable.Arn
 
   CMSBucket:
     name: cms-bucket-celig-aws-${self:provider.stage}

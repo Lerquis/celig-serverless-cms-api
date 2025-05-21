@@ -32,6 +32,7 @@ const createBlog = async (event, context) => {
     tags,
     content,
     slug,
+    views: 0,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -42,7 +43,7 @@ const createBlog = async (event, context) => {
       .promise();
 
     // ! Esto se tiene que descomentar, para seguir enviando correos cuando se crea un blog
-    // await notifyUsers(blog);
+    await notifyUsers(blog);
   } catch (error) {
     console.error(error);
     throw new createError.InternalServerError("Could not create blog");
