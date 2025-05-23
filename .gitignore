@@ -2,3 +2,4 @@ node_modules
 jspm_packages
 .serverless
 .webpack
+auth0_client_id.pem

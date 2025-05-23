@@ -3,7 +3,25 @@ import httpEventNormalizer from "@middy/http-event-normalizer";
 import httpErrorHandler from "@middy/http-error-handler";
 import cors from "@middy/http-cors";
 
-export const commonMiddleware = (handler, customMiddlewares = []) =>
-  middy(handler)
-    .use([...customMiddlewares]) // se aplican primero
-    .use([httpEventNormalizer(), httpErrorHandler(), cors()]);
+export const commonMiddleware = (handler, customMiddlewares = []) => {
+  const middyHandler = middy(handler);
+
+  // Aplicar middlewares personalizados primero
+  customMiddlewares.forEach((middleware) => {
+    middyHandler.use(middleware);
+  });
+
+  // Aplicar middlewares comunes individualmente
+  return middyHandler
+    .use(httpEventNormalizer())
+    .use(
+      cors({
+        origin: "http://localhost:4321",
+      })
+    )
+    .use(
+      httpErrorHandler({
+        fallbackMessage: "An unexpected error occurred",
+      })
+    );
+};

@@ -15,6 +15,7 @@ provider:
     PODCAST_TABLE_NAME: ${self:custom.PodcastTable.name}
     GALLERY_TABLE_NAME: ${self:custom.GalleryTable.name}
     TESTIMONIAL_TABLE_NAME: ${self:custom.TestimonialTable.name}
+    AUTH0_CLIENT_ID: ${file(auth0_client_id.pem)}
 
     CMS_BUCKET_NAME: ${self:custom.CMSBucket.name}
     MAIL_QUEUE_URL: ${self:custom.MailQueue.url}
@@ -56,9 +57,6 @@ custom:
     arn: ${cf:notification-service-${self:provider.stage}.MailQueueArn}
     url: ${cf:notification-service-${self:provider.stage}.MailQueueUrl}
 
-  # CMSTable:
-  #   name: !Ref CMSTable
-  #   arn: !GetAtt CMSTable.Arn
   BlogTable:
     name: !Ref BlogTable
     arn: !GetAtt BlogTable.Arn

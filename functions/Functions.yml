@@ -191,3 +191,17 @@ deleteTestimonial:
         path: /testimonial/{id}
         authorizer: ${self:custom.authorizer}
         cors: true
+
+# !
+# !
+# !
+# !
+# !Login
+
+login:
+  handler: src/handlers/login/login.handler
+  events:
+    - http:
+        method: POST
+        path: /login
+        cors: true
