@@ -20,7 +20,7 @@ const updateBlog = async (event) => {
   if (title) {
     newSlug = slugify(title, { lower: true, strict: true });
     const existing = await existingItem(
-      slug,
+      newSlug,
       "slug",
       process.env.BLOG_TABLE_NAME,
       "slug-index"
