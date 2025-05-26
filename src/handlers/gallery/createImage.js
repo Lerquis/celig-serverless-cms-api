@@ -1,10 +1,8 @@
 import AWS from "aws-sdk";
 import { v4 as uuid } from "uuid";
 import { uploadPicture } from "../../lib/uploadPicture.js";
+import { commonMiddleware } from "../../lib/commonMiddleware.js";
 import createHttpError from "http-errors";
-import middy from "@middy/core";
-import httpErrorHandler from "@middy/http-error-handler";
-import cors from "@middy/http-cors";
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
@@ -38,4 +36,5 @@ const createImage = async (event) => {
   };
 };
 
-export const handler = middy(createImage).use(httpErrorHandler()).use(cors());
+// export const handler = middy(createImage).use(httpErrorHandler()).use(cors());
+export const handler = commonMiddleware(createImage);
