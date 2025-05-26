@@ -36,5 +36,4 @@ const createImage = async (event) => {
   };
 };
 
-// export const handler = middy(createImage).use(httpErrorHandler()).use(cors());
 export const handler = commonMiddleware(createImage);

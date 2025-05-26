@@ -30,8 +30,8 @@ const createTestimonial = async (event) => {
     content,
     imageUrl,
     imageName,
-    createdAt: new Date().toISOString,
-    updatedAt: new Date().toISOString,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
 
   try {
