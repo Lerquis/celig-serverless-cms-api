@@ -10,7 +10,6 @@ export const CreateTestimonialSchema = {
       properties: {
         names: { type: "string", minLength: 1 },
         content: { type: "string", minLength: 1 },
-        image: { type: "string", minLength: 1 },
       },
     },
   },
@@ -28,7 +27,6 @@ export const UpdateTestimonialSchema = {
       properties: {
         names: { type: "string", minLength: 1 },
         content: { type: "string", minLength: 1 },
-        image: { type: "string", minLength: 1 },
       },
     },
   },

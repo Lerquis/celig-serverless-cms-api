@@ -4,6 +4,7 @@ import { transpileSchema } from "@middy/validator/transpile";
 import { PodcastSchema } from "../../lib/schemas/podcastSchemas.js";
 import { commonMiddleware } from "../../lib/commonMiddleware.js";
 import { existingItem } from "../../lib/existingItem.js";
+import { convertToSpotifyEmbedUrl } from "../../lib/convertEmbedSpotify.js";
 import createHttpError from "http-errors";
 import httpJsonBodyParser from "@middy/http-json-body-parser";
 import validator from "@middy/validator";
@@ -13,8 +14,10 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const createPodcast = async (event) => {
   const { url } = event.body;
 
+  const newUrl = convertToSpotifyEmbedUrl(url);
+
   const existing = await existingItem(
-    url,
+    newUrl,
     "url",
     process.env.PODCAST_TABLE_NAME,
     "url-index"
@@ -25,7 +28,7 @@ const createPodcast = async (event) => {
 
   const podcast = {
     id: uuid(),
-    url,
+    url: newUrl,
     createdAt: new Date().toISOString(),
   };
 
