@@ -16,7 +16,7 @@ export const commonMiddleware = (handler, customMiddlewares = []) => {
     .use(httpEventNormalizer())
     .use(
       cors({
-        origins: ["http://localhost:4321", "https://celig-frontend.vercel.app"],
+        origins: ["http://localhost:4321", "https://celigcr.com"],
       })
     )
     .use(
