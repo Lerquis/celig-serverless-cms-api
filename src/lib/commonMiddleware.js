@@ -16,7 +16,11 @@ export const commonMiddleware = (handler, customMiddlewares = []) => {
     .use(httpEventNormalizer())
     .use(
       cors({
-        origins: ["http://localhost:4321", "https://celigcr.com"],
+        origins: [
+          "http://localhost:4321",
+          "https://celigcr.com",
+          "https://www.celigcr.com",
+        ],
       })
     )
     .use(
